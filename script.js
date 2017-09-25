@@ -16,7 +16,7 @@ var paddle2Y = 250;
 
 var player1Score  = 0;
 var player2Score = 0;
-const WINNING_SCORE = 3;
+const WINNING_SCORE = 10;
 var showingWinScreen = false;
 // my additions
 var menuOptions = 0; //var for menu creation
