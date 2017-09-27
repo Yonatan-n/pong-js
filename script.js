@@ -16,11 +16,14 @@ var paddle2Y = 250;
 
 var player1Score  = 0;
 var player2Score = 0;
-const WINNING_SCORE = 10;
+const WINNING_SCORE = 3;
 var showingWinScreen = false;
 // my additions
 var menuOptions = 0; //var for menu creation
 var distanceFromEdge = 12;
+var keyPressedIs = 27; // 27 : ESC, 49 : '1', 50 : '2', 51 : '3'
+var computerSpeed = 5;
+var FPS = 30/60;
 // end
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
@@ -37,31 +40,54 @@ function calculateMousePos(evt){
   };
 }
 
-/*function back2Menu(event){
-  var key = event.'keydown';
-  if (key != 0){
-    console.log(key);
+/*
+jquery function to listen to key press
+*/
+$(document).keydown(function(event) {
+  keyPressedIs = event.keyCode;
+  if (keyPressedIs == 49 && menuOptions == 0) {
+    menuOptions = 1;
+    ballSpeedX = 10 * FPS;
+    ballSpeedY = 3 * FPS;
+    computerSpeed = 6 * FPS;
+  } else if (keyPressedIs == 50 && menuOptions == 0) {
+    menuOptions = 2;
+    ballSpeedX = 13 * FPS;
+    ballSpeedY = 5 * FPS;
+    computerSpeed = 10 * FPS;
+  } else if (keyPressedIs == 51 && menuOptions == 0) {
+    menuOptions = 3;
+    ballSpeedX = 20 * FPS;
+    ballSpeedY = 11 * FPS;
+    computerSpeed = 11 * FPS;
+  } else if (keyPressedIs == 27) {
+    menuOptions = 0; // this is ESC
+    ballReset();
+    player1Score = 0;
+    player2Score = 0;
+    showingWinScreen = false;
   }
-
-}*/
-
+  console.log(keyPressedIs);
+  event.preventDefault();
+});
 function handleMouseClick(evt){
   if (showingWinScreen){
     player1Score = 0;
     player2Score = 0;
     showingWinScreen = false;
-  } else if (menuOptions == 0){
+  } /*else if (menuOptions == 0){
+    if(keyPressedIs == 49){
     menuOptions = 1;
-    if(evt.x > 0 || evt.x > canvas.width/2 +250 -120 && evt.x < canvas.height/2 + 250 && evt.y > canvas.height/3 -50  && evt.y < canvas.height/3){
-    menuOptions = 1;
-    } else{ console.log("X : " +evt.x,"Y : " + evt.y, canvas.height);}
-  } /// (canvas.width/2 - 120, canvas.height/3, 250, 50)///
+    }
+
+  }*/
 }
+
 
 window.onload = function(){
   canvas = document.getElementById('gameCanvas')
   canvasContext = canvas.getContext('2d');
-  var framesPerSecond = 30;
+  var framesPerSecond = 60;
   setInterval(callBoth, 1000 / framesPerSecond);
 
   canvas.addEventListener('mousedown', handleMouseClick);
@@ -88,7 +114,7 @@ function ballReset(){
   }
 
   ballSpeedX = -1 * ballSpeedX;
-  ballSpeedY = 5;
+  ballSpeedY = 0;
   ballX = canvas.width / 2;
   ballY = canvas.height / 2;
 }
@@ -96,9 +122,9 @@ function ballReset(){
 function computerMovment(){
   var paddle2YCenter = paddle2Y + (PADDLE_HEIGHT / 2);
   if (paddle2YCenter < ballY - 30){
-    paddle2Y += 5;
+    paddle2Y += computerSpeed;
   } else if (paddle2YCenter > ballY + 30){
-    paddle2Y -= 5;
+    paddle2Y -= computerSpeed;
   }
 
 }
@@ -121,12 +147,7 @@ function moveEverything(){
 
       deltaY = ballY - (paddle1Y + (PADDLE_HEIGHT/2));
       ballSpeedY = deltaY * 0.3;
-
-    }/* else if(ball){
-      player2Score++;
-      ballReset();
-
-    }*/ //else{
+    }
   } else if (ballX > (canvas.width - PADDLE_THICKNESS*2 - 4) && ballX < canvas.width ){ /* player2 side */
     if (ballY > paddle2Y &&
         ballY < paddle2Y + PADDLE_HEIGHT){
@@ -134,11 +155,7 @@ function moveEverything(){
 
       deltaY = ballY - (paddle2Y + (PADDLE_HEIGHT/2));
       ballSpeedY = deltaY * 0.3;
-    }/* else {
-      player1Score++;
-      ballReset();
-
-    }*/
+    }
   } else if(ballX < 0){ //out in player1side, player2 win
       player2Score++;
       ballReset();
