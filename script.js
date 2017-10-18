@@ -18,7 +18,7 @@ var distanceFromEdge = 12;
 var keyPressedIs = 27; // 27 : ESC, 49 : '1', 50 : '2', 51 : '3'
 var computerSpeed = 5;
 var FPS = 30/60; //original is 30fps, this variable is to help keep the values about the same speed
-var level = 0;
+var level = 1;
 // end
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
@@ -37,22 +37,17 @@ function calculateMousePos(evt){
 
 function rectObstacle(leftX, topY, width, height, color) {
   colorRect(leftX, topY, width, height, color);
-  if ((ballX >= leftX && ballX <= leftX + 0 || ballX >= leftX + width - 0 && ballX <= leftX + width)
-  && ( ballY >= topY + 0 && ballY <= topY + height )) {
+  if (ballY >= topY-10 && ballY <= topY + height +10 && ballX >= leftX && ballX <= leftX + width) {
+      ballSpeedY *= -1;
+  } if (ballX >= leftX -5 && ballX <= leftX + width +5 && ballY >= topY -5 && ballY <= topY + height +5 ) {
     ballSpeedX = -1 * ballSpeedX;
+      }
 
-  } else if (ballY >= topY + 0 && ballY <= topY + height + 0 && (ballX >= leftX -5 && ballX <= leftX +width +5) ) {
-    ballSpeedY = -1 * ballSpeedY;
 
-  /*
-  if ((ballX > leftX && ballX < leftX +3 || ballX > leftX+width -3 &&  ballX < leftX + width)
-  &&( ballY > topY +3 && ballY < topY  || ballY < topY + height -3 && ballY > ballY + height )) {
-    ballSpeedX = -1 * ballSpeedX;
-  } else if (ballY > topY -3 && ballY < topY + height +3
-  && ballX > leftX -3 && ballX < leftX + width +3) {
-    ballSpeedY = -1 * ballSpeedY;
-    */
-  }
+   /*else if (ballY >= topY + 5 && ballY <= topY + height + 5 && (ballX >= leftX -5 && ballX <= leftX +width +5) ) {
+    ballSpeedY = -1 * ballSpeedY;*/
+
+
 }
 
 function showLevel(){
@@ -104,12 +99,12 @@ $(document).keydown(function(event) {
     computerSpeed = 11 * FPS;
   } else if (keyPressedIs == 27) {
     menuOptions = 0; // this is ESC
-    ballReset();
+    ballReset("player");
     player1Score = 0;
     player2Score = 0;
     showingWinScreen = false;
     level = 0;
-  } else if(keyPressedIs == 52) {
+  } else if(keyPressedIs == 52 && menuOptions == 0) {
     menuOptions = 3;
     ballSpeedX = 20 * FPS;
     ballSpeedY = 11 * FPS;
@@ -121,7 +116,7 @@ $(document).keydown(function(event) {
   //  ballSpeedY = 0;
     //ballSpeedX = 0; // this is pretty ugly and not well written...
     //helpMenu();
-  } else if (level == 5) {
+  } else if (level == 5 && menuOptions == 0) {
     //ballSpeedX = 0;
     //ballSpeedY = 0;
   }
@@ -160,15 +155,21 @@ function callBoth(){
   drawEverything();
 }
 
-function ballReset(X = -15, Y){
+function ballReset(where){
   if (player1Score >= WINNING_SCORE ||
       player2Score >= WINNING_SCORE){
     showingWinScreen = true;
 
   }
   // X and Y are from center
+  if (where == "player"){
   X = -150;
   Y = 100;
+} else if (where == "computer") {
+  X = 150;
+  Y = 100;
+
+}
   ballSpeedX = -1 * ballSpeedX;
   ballSpeedY = 0;
   ballX = canvas.width / 2 + X; //the -15 make sure the ball wont get sutck in the obstecals
@@ -195,7 +196,7 @@ function moveEverything(){
   ballX = ballX + ballSpeedX;
   ballY = ballY + ballSpeedY;
 
-  if (ballX < (distanceFromEdge + PADDLE_THICKNESS*2 + 4)
+  if (ballX < (distanceFromEdge + PADDLE_THICKNESS*2 + 0)
   && ballX > 0){ // player1 side
     if(ballY > paddle1Y &&
        ballY < paddle1Y + PADDLE_HEIGHT){
@@ -214,10 +215,10 @@ function moveEverything(){
     }
   } else if(ballX < 0){ //out in player1side, player2 win
       player2Score++;
-      ballReset();
+      ballReset("player");
   } else if (ballX > canvas.width + 0){
     player1Score++;
-    ballReset();
+    ballReset("computer");
   }
 
   if (ballY < 0){
