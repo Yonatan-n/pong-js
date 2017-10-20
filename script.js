@@ -10,7 +10,7 @@ var paddle2Y = 250;
 
 var player1Score  = 0;
 var player2Score = 0;
-var WINNING_SCORE = 2; //this shold be 3? anyway more than 1
+var WINNING_SCORE = 5; //this shold be 3? anyway more than 1
 var showingWinScreen = false;
 // my additions
 var menuOptions = 0; //var for menu creation
@@ -18,7 +18,7 @@ var distanceFromEdge = 12;
 var keyPressedIs = 27; // 27 : ESC, 49 : '1', 50 : '2', 51 : '3'
 var computerSpeed = 5;
 var FPS = 30/60; //original is 30fps, this variable is to help keep the values about the same speed
-var level = 1;
+var level = 0;
 // end
 const PADDLE_HEIGHT = 100;
 const PADDLE_THICKNESS = 10;
