@@ -10,7 +10,7 @@ var paddle2Y = 250;
 
 var player1Score  = 0;
 var player2Score = 0;
-var WINNING_SCORE = 5; //this shold be 3? anyway more than 1
+var WINNING_SCORE = 2; //this shold be 3? anyway more than 1
 var showingWinScreen = false;
 // my additions
 var menuOptions = 0; //var for menu creation
@@ -34,18 +34,24 @@ function calculateMousePos(evt){
     y: mouseY
   };
 }
-
+/*
 function rectObstacle(leftX, topY, width, height, color) {
   colorRect(leftX, topY, width, height, color);
   if (ballY >= topY-10 && ballY <= topY + height +10 && ballX >= leftX && ballX <= leftX + width) {
       ballSpeedY *= -1;
   } if (ballX >= leftX -5 && ballX <= leftX + width +5 && ballY >= topY -5 && ballY <= topY + height +5 ) {
     ballSpeedX = -1 * ballSpeedX;
-      }
+  }*/
 
+      function rectObstacle(leftX, topY, width, height, color) {
+        colorRect(leftX, topY, width, height, color);
+        if ((ballX == leftX || ballX == leftX + width) &&(ballY > topY && ballY < topY + height)) {
+          ballSpeedX = -1 * ballSpeedX;
 
-   /*else if (ballY >= topY + 5 && ballY <= topY + height + 5 && (ballX >= leftX -5 && ballX <= leftX +width +5) ) {
-    ballSpeedY = -1 * ballSpeedY;*/
+        }  //if ((ballY == topY + 0 || ballY == topY + height) &&(ballX > leftX && ballX < leftX +width ) ) {
+            if ((ballY > topY && ballY < topY + height) && (ballX > leftX && ballX < leftX + width)) {
+          ballSpeedY *= -1;
+        } // This is working GOOD now, DO NOT FUCK WITH THIS! <-----
 
 
 }
