@@ -10,7 +10,7 @@ var paddle2Y = 250;
 
 var player1Score  = 0;
 var player2Score = 0;
-var WINNING_SCORE = 5; //this shold be 3? anyway more than 1
+var WINNING_SCORE = 2; //this shold be 3? anyway more than 1
 var showingWinScreen = false;
 // my additions
 var menuOptions = 0; //var for menu creation
@@ -20,7 +20,7 @@ var computerSpeed = 5;
 var FPS = 30/60; //original is 30fps, this variable is to help keep the values about the same speed
 var level = 0;
 // end
-const PADDLE_HEIGHT = 100;
+const PADDLE_HEIGHT = 150;
 const PADDLE_THICKNESS = 10;
 
 function calculateMousePos(evt){
@@ -169,11 +169,11 @@ function ballReset(where){
   }
   // X and Y are from center
   if (where == "player"){
-  X = -150;
-  Y = 100;
+  X = -250; // 150
+  Y = 0; //100
 } else if (where == "computer") {
-  X = 150;
-  Y = 100;
+  X = 250;
+  Y = 0; //100
 
 }
   ballSpeedX = -1 * ballSpeedX;
